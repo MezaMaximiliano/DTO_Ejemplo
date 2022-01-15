@@ -22,9 +22,9 @@ public class EstudianteService {
     ModelMapper modelMapper;
 
     public EstudianteDto save(EstudianteDto estudianteDto){
-        Estudiante entity = modelMapper.map(estudianteDto,Estudiante.class);
-        estudianteRepository.save(entity);
-        return modelMapper.map(entity,EstudianteDto.class);
+        Estudiante estudiante = modelMapper.map(estudianteDto,Estudiante.class);
+        estudianteRepository.save(estudiante);
+        return modelMapper.map(estudiante,EstudianteDto.class);
     }
 
     public EstudianteDto findById(Long id){

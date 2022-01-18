@@ -1,6 +1,7 @@
 package com.dto.demo.controller;
 
 import com.dto.demo.dto.ProfesorDto;
+import com.dto.demo.entity.Profesor;
 import com.dto.demo.service.ProfesorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,7 @@ public class ProfesorController {
     }
 
     @PostMapping("/save")
-    public ProfesorDto save(@RequestBody ProfesorDto profesorDto){
-        return profesorService.save(profesorDto);
+    public ProfesorDto save(@RequestBody Profesor profesor){
+        return profesorService.save(profesor);
     }
 }

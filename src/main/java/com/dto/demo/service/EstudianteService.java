@@ -10,10 +10,7 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class EstudianteService {
@@ -27,15 +24,19 @@ public class EstudianteService {
     @Autowired
     ModelMapper modelMapper;
 
-    public EstudianteDto save(Estudiante estudiante){
-
+    public EstudianteDto save(Estudiante estudiante) throws Exception{
         estudianteRepository.save(estudiante);
         return modelMapper.map(estudiante,EstudianteDto.class);
     }
 
-    public EstudianteDto findById(Long id){
+    public EstudianteDto findById(Long id)throws Exception{
         Estudiante estudiante = estudianteRepository.findById(id).get();
-        return modelMapper.map(estudiante,EstudianteDto.class);
+        if(estudiante==null){
+            return modelMapper.map(estudiante,EstudianteDto.class);
+        }else{
+            throw new Exception("Alumno no encontrado");
+        }
+
     }
 
     public List<EstudianteDto> findAll(){
@@ -44,7 +45,7 @@ public class EstudianteService {
         return estudianteDtos;
     }
 
-    public EstudianteDto agregarProfAEstudiante(Long estudianteId,Long profesorId)  {
+    public EstudianteDto agregarProfAEstudiante(Long estudianteId,Long profesorId)  throws Exception{
         Estudiante estudiante = estudianteRepository.findById(estudianteId).get();
         Profesor profesor = profesorRepository.findById(profesorId).get();
         estudiante.getProfesorList().add(profesor);

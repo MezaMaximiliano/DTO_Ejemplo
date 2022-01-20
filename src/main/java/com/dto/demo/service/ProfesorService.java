@@ -1,6 +1,5 @@
 package com.dto.demo.service;
 
-import com.dto.demo.dto.EstudianteDto;
 import com.dto.demo.dto.ProfesorDto;
 import com.dto.demo.entity.Estudiante;
 import com.dto.demo.entity.Profesor;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.HTMLDocument;
 import java.util.ArrayList;
 import java.util.List;
 

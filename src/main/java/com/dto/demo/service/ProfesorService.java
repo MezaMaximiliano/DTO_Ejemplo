@@ -4,6 +4,7 @@ import com.dto.demo.dto.EstudianteDto;
 import com.dto.demo.dto.ProfesorDto;
 import com.dto.demo.entity.Estudiante;
 import com.dto.demo.entity.Profesor;
+import com.dto.demo.repository.EstudianteRepository;
 import com.dto.demo.repository.ProfesorRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -22,10 +23,13 @@ public class ProfesorService {
     ProfesorRepository profesorRepository;
 
     @Autowired
+    EstudianteRepository estudianteRepository;
+
+    @Autowired
     ModelMapper modelMapper;
 
     @Transactional
-    public ProfesorDto save(Profesor profesor){
+    public ProfesorDto save(Profesor profesor) throws Exception{
         Profesor p2 = profesorRepository.save(profesor);
         if(p2.getEstudianteList() == null){
             p2.setEstudianteList(new ArrayList<>());
@@ -39,14 +43,28 @@ public class ProfesorService {
     }
 
     @Transactional
-    public ProfesorDto findById(Long id){
-        Profesor profesor = profesorRepository.findById(id).get();
-        return modelMapper.map(profesor,ProfesorDto.class);
+    public ProfesorDto findById(Long id) throws Exception{
+
+        if(profesorRepository.findById(id).isPresent()){
+            Profesor profesor = profesorRepository.findById(id).get();
+            return modelMapper.map(profesor,ProfesorDto.class);
+        }else{
+            throw new Exception("Profesor no encontrado");
+        }
+
     }
 
     @Transactional
     public List<ProfesorDto> findAll(){
         List<Profesor> profesorList = profesorRepository.findAll();
         return modelMapper.map(profesorList, new TypeToken<List<ProfesorDto>>(){}.getType());
+    }
+
+    public ProfesorDto agregarEstudianteAProf(Long estudianteId,Long profesorId)  throws Exception{
+        Estudiante estudiante = estudianteRepository.findById(estudianteId).get();
+        Profesor profesor = profesorRepository.findById(profesorId).get();
+        profesor.getEstudianteList().add(estudiante);
+        profesorRepository.save(profesor);
+        return modelMapper.map(profesor,ProfesorDto.class);
     }
 }
